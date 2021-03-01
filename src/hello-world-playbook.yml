@@ -1,0 +1,23 @@
+# This block executes on the main linux node only
+- name: Main Hello World
+  hosts: main
+  gather_facts: no
+  tasks:
+    - name: Hello World
+      raw: echo "Hello, Linux World!"
+
+# This block executes for all linux worker nodes
+- name: Linux Worker Hello World
+  hosts: linux_workers
+  gather_facts: no
+  tasks:
+    - name: Hello World
+      raw: echo "Hello, Linux World!"
+
+# This block executes for all windows worker nodes
+- name: Windows Worker Hello World
+  hosts: windows_workers
+  gather_facts: no
+  tasks:
+    - name: Hello World
+      raw: Write-Host "Hello, Windows World!"

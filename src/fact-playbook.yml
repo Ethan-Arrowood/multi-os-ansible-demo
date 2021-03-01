@@ -1,0 +1,27 @@
+# On the main host only
+- name: Main debug echo
+  hosts: main
+  tasks:
+    # set an ansible fact - in this case, a hello world message
+    - name: Set msg fact
+      set_fact:
+        msg: "Hello, World!"
+    # register the hostname of the main host
+    - name: Get hostname
+      shell: 'hostname'
+      register: hostname_out
+    # and print everything out in the ansible-playbook run
+    - debug:
+        msg: "{{hostvars['main'].msg}} from {{ hostname_out.stdout }}"
+
+# On all of the worker nodes
+- name: Workers Echo
+  hosts: linux_workers, windows_workers
+  tasks:
+    # Register their own hostname
+    - name: Get hostname
+      shell: 'hostname'
+      register: hostname_out
+    # Print out their hostname and the fact registered by the host server
+    - debug:
+        msg: "On {{ hostname_out.stdout }} received message {{ hostvars['main'].msg }}"
